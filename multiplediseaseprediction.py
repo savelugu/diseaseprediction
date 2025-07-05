@@ -1,29 +1,33 @@
 import pickle
 import streamlit as st
 from streamlit_option_menu import option_menu
+from PIL import Image
+import base64
+import io
 
 st.set_page_config(page_title="Disease Detector", layout="wide", page_icon="🤖")
 
+
+
+# Load and resize image manually
+img = Image.open('./images/mo.png')
+img = img.resize((150, 150))
+
+# Convert to bytes
+buf = io.BytesIO()
+img.save(buf, format="PNG")
+byte_im = buf.getvalue()
+
+# Display centered image in sidebar using markdown table trick
 st.sidebar.markdown(
-    """
-    <style>
-    .sidebar .sidebar-content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-    }
-    .sidebar img {
-        max-width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-    }
-    </style>
-    """, unsafe_allow_html=True
+    f"""
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{base64.b64encode(byte_im).decode()}" width="200"/>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
 
-st.sidebar.image('./images/mo.jpg')
 
 
 
@@ -50,17 +54,17 @@ pregnancy_model=pickle.load(open('pregnancy_model.sav', 'rb'))
 # Sidebar for navigation
 with st.sidebar:
     selected = option_menu(
-        'Multiple Disease Prediction System',
+        '🩺 Multiple Disease Prediction System',
         ['Home','Diabetes Prediction', 'Heart Disease Prediction', 'Parkinsons Prediction', 'Liver Disease Prediction','CKD Prediction','Lung Cancer Prediction','Pregnancy Outcome Prediction'],
         icons=['person','activity', 'heart', 'person','person','person','person','person'],
         default_index=0
     )
 
-st.title("Multiple Disease Prediction System")
+st.title("💊 Multiple Disease Prediction System")
 
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
-    st.subheader('Diabetes Prediction')
+    st.subheader('🧑 Diabetes Prediction')
 
     # Getting the input data from the user
     col1, col2, col3 = st.columns(3)
@@ -92,7 +96,7 @@ if selected == 'Diabetes Prediction':
 
 # Heart Disease Prediction Page
 if selected == 'Heart Disease Prediction':
-    st.subheader('Heart Disease Prediction')
+    st.subheader('❤️ Heart Disease Prediction')
 
     # Getting input data from the user
     col1, col2, col3 = st.columns(3)
@@ -133,7 +137,7 @@ if selected == 'Heart Disease Prediction':
 
 # Parkinson's Prediction Page
 if selected == "Parkinsons Prediction":
-    st.subheader("Parkinson's Disease Prediction")
+    st.subheader(" 🏃 Parkinson's Disease Prediction")
 
     # Getting input data from the user
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -194,7 +198,7 @@ if selected == "Parkinsons Prediction":
     
     # Liver Disease Prediction Page
 if selected == 'Liver Disease Prediction':
-    st.subheader('Liver Disease Prediction')
+    st.subheader('👨‍🎓 Liver Disease Prediction')
 
     # Getting input data from the user
     col1, col2, col3 = st.columns(3)
@@ -232,7 +236,7 @@ if selected == 'Liver Disease Prediction':
     
 # CKD Prediction Page
 if selected == 'CKD Prediction':
-    st.subheader('Chronic Kidney Disease (CKD) Prediction')
+    st.subheader('👩‍⚕️ Chronic Kidney Disease (CKD) Prediction')
 
     # Getting input data from the user
     col1, col2, col3 = st.columns(3)
